@@ -69,7 +69,6 @@ mshort/$(APP):CFLAGS += -mshort
 m68020-60/mshort/$(APP): CFLAGS += -m68020-60 -mshort
 m5475/mshort/$(APP): CFLAGS += -mcpu=5475 -mshort
 
-ctest: $(TEST_APP)
 all:$(patsubst %,%/$(APP),$(TRGTDIRS))
 #
 # generate pattern rules for multilib object files.
@@ -90,6 +89,7 @@ $(1)/$(APP): $$($(1)_OBJS)
 	#$(STRIP) $$@
 endef
 $(foreach DIR,$(TRGTDIRS),$(eval $(call CC_TEMPLATE,$(DIR))))
+$(foreach DIR,$(TRGTDIRS),$(shell mkdir -p $(DIR)/objs))
 
 $(DEPEND): $(ASRCS) $(CSRCS)
 	-rm -f $(DEPEND)
@@ -101,6 +101,7 @@ $(DEPEND): $(ASRCS) $(CSRCS)
 clean:
 	@rm -f $(patsubst %,%/objs/*.o,$(TRGTDIRS)) $(patsubst %,%/$(APP),$(TRGTDIRS))
 	@rm -f $(DEPEND) mapfile
+	@rm -rf $(patsubst %,%/objs,$(TRGTDIRS))
 
 .PHONY: printvars
 printvars:
