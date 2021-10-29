@@ -27,7 +27,7 @@ endif
 
 DEPEND=depend
 
-LIBCMINI=../../libcmini
+LIBCMINI=../libcmini
 INCLUDE=-I$(LIBCMINI)/include -nostdlib
 LIBS=-lcmini -nostdlib -lgcc
 CC=$(PREFIX)/bin/gcc
@@ -42,9 +42,10 @@ TEST_APP=$(APP)
 CFLAGS=\
 	-Os\
 	-g\
+	-fomit-frame-pointer\
 	-Wl,-Map,mapfile\
 	-Wall
-	
+
 SRCDIR=sources
 INCDIR=include
 INCLUDE+=-I$(INCDIR)
@@ -86,7 +87,7 @@ $(1)_OBJS=$(patsubst %,$(1)/objs/%,$(OBJS))
 $(1)/$(APP): $$($(1)_OBJS)
 	$$(Q)echo "CC $$@"
 	$(CC) $$(CFLAGS) -o $$@ $(LIBCMINI)/build/crt0.o $$($(1)_OBJS) -L$(LIBCMINI)/build/$(1) $(LIBS)
-	$(STRIP) $$@
+	#$(STRIP) $$@
 endef
 $(foreach DIR,$(TRGTDIRS),$(eval $(call CC_TEMPLATE,$(DIR))))
 
@@ -104,7 +105,7 @@ clean:
 .PHONY: printvars
 printvars:
 	@$(foreach V,$(.VARIABLES), $(if $(filter-out environment% default automatic, $(origin $V)),$(warning $V=$($V))))
-	 
+
 ifneq (clean,$(MAKECMDGOALS))
 -include $(DEPEND)
 endif
@@ -118,7 +119,7 @@ ftest: $(TEST_APP)
 	$(HATARI) --grab -w --tos /usr/share/hatari/TOS404.IMG \
 	--machine falcon --cpuclock 32 --cpulevel 3 \
 	-d . $(APP)
-	
+
 sttest: $(TEST_APP)
 	$(HATARI) --grab -w --tos "/usr/share/hatari/tos106de.img" \
 	--machine st --cpuclock 32 --cpulevel 3  --vdi true --vdi-planes 4 \
