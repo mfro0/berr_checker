@@ -19,7 +19,6 @@ long ssp;
 
 int main(int argc, char *argv[])
 {
-
     /*
      * reroute bus error vector
      */
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
     void (*berr)(void);               /* previous handler */
     void (*aerr)(void);
 
-    volatile const short *viking = (short *) strtol(argv[1], NULL, 16);
+    volatile short *viking = (short *) strtol(argv[1], NULL, 16);
 
     access = true;
 
@@ -36,12 +35,30 @@ int main(int argc, char *argv[])
 
     berr = Setexc(2, err_handler);
     aerr = Setexc(3, err_handler);
+
     if (!setjmp(env))
-        *viking;
+    {
+        if (argc == 2)
+        {
+            (void) *viking;
+            printf("%p is readable, value=%d\r\n", viking, *viking);
+        }
+        else if (argc == 3)
+        {
+            *viking = strtol(argv[2], NULL, 16);
+            printf("0x%x written to %p\r\n", *viking, viking);
+        }
+    }
+    else
+    {
+        printf("%p not accessible\r\n", viking);
+    }
+
+    /* reinstall old handlers */
     (void) Setexc(2, berr);
     (void) Setexc(3, aerr);
     Super(ssp);
-    printf("%p is%sreadable\r\n", viking, access ? " " : " not ");
+
 
     return 0;
 }
