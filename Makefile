@@ -36,7 +36,7 @@ CC=$(CROSSBINDIR)gcc
 STRIP=$(CROSSBINDIR)strip
 STACK=$(CROSSBINDIR)stack
 
-APP=mist.ttp
+APP=berr.ttp
 TEST_APP=$(APP)
 
 CFLAGS=\
