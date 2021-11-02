@@ -4,6 +4,9 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#define __BSD_SOURCE
+
 #include <setjmp.h>
 
 static bool access;
@@ -27,7 +30,7 @@ int main(int argc, char *argv[])
     void (*berr)(void);               /* previous handler */
     void (*aerr)(void);
 
-    volatile short *viking = (short *) strtol(argv[1], NULL, 16);
+    volatile short *viking = (short *) strtol(argv[1], NULL, 0);
 
     access = true;
 
