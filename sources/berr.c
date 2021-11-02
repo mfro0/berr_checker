@@ -30,11 +30,11 @@ int main(int argc, char *argv[])
     void (*berr)(void);               /* previous handler */
     void (*aerr)(void);
 
-    volatile short *viking = (short *) strtol(argv[1], NULL, 0);
+    volatile short *trgt = (short *) strtol(argv[1], NULL, 0);
 
     access = true;
 
-    printf("checking %p\r\n", viking);
+    printf("checking %p\r\n", trgt);
 
     berr = Setexc(2, err_handler);
     aerr = Setexc(3, err_handler);
@@ -43,18 +43,18 @@ int main(int argc, char *argv[])
     {
         if (argc == 2)
         {
-            (void) *viking;
-            printf("%p is readable, value=%d\r\n", viking, *viking);
+            (void) *trgt;
+            printf("%p is readable, value=%d\r\n", trgt, *trgt);
         }
         else if (argc == 3)
         {
-            *viking = strtol(argv[2], NULL, 16);
-            printf("0x%x written to %p\r\n", *viking, viking);
+            *trgt = strtol(argv[2], NULL, 16);
+            printf("0x%x written to %p\r\n", *trgt, trgt);
         }
     }
     else
     {
-        printf("%p not accessible\r\n", viking);
+        printf("%p not accessible\r\n", trgt);
     }
 
     /* reinstall old handlers */
