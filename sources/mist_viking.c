@@ -12,7 +12,7 @@ jmp_buf env;
 void err_handler(int err)
 {
     access = false;
-    longjmp(env, false);
+    longjmp(env, true);
 }
 
 long ssp;
