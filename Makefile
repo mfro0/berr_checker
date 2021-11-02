@@ -51,7 +51,7 @@ INCDIR=include
 INCLUDE+=-I$(INCDIR)
 
 CSRCS=\
-	$(SRCDIR)/mist_viking.c
+	$(SRCDIR)/berr.c
 
 COBJS=$(patsubst $(SRCDIR)/%.o,%.o,$(patsubst %.c,%.o,$(CSRCS)))
 AOBJS=$(patsubst $(SRCDIR)/%.o,%.o,$(patsubst %.S,%.o,$(ASRCS)))
