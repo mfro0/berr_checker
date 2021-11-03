@@ -40,6 +40,7 @@ APP=berr.ttp
 TEST_APP=$(APP)
 
 CFLAGS=\
+	-std=c99\
 	-Os\
 	-g\
 	-fomit-frame-pointer\
