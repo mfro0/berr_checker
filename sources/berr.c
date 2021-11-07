@@ -12,8 +12,15 @@
 static bool access;
 jmp_buf env;
 
-void err_handler(int err)
+
+void err_handler(void)
 {
+    short local;
+
+    //printf("segmentation violation.\r\n");
+    //for (int i = 1; i < 4; i ++)
+    //  printf("(sp + %d) = 0x%04x\r\n", i * 2 - 2, * (&local + i));
+
     access = false;
     longjmp(env, true);
 }
@@ -30,7 +37,7 @@ int main(int argc, char *argv[])
     void (*berr)(void);               /* previous handler */
     void (*aerr)(void);
 
-    volatile short *trgt = (short *) strtol(argv[1], NULL, 0);
+    volatile short *trgt = (short *) strtoul(argv[1], NULL, 0);
 
     access = true;
 
